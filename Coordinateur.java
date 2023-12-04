@@ -2,7 +2,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class Coordinateur {
     public static String read(String filepath) throws FileNotFoundException {
@@ -25,6 +28,14 @@ public class Coordinateur {
         }
 
         return result;
+    }
+
+    public static List<Map<String, Integer>> maps(String[] blocks) {
+        List<Map<String, Integer>> res = new ArrayList<>();
+        for (String block : blocks) {
+            res.add(CalculMap.countWord(block));
+        }
+        return res;
     }
 }
 
