@@ -1,6 +1,6 @@
 import java.io.FileNotFoundException;
 public class Main {
-    public static int nbMap = 231;
+    public static int nbMap = 10; //231
     public static void main(String[] args){
         String txt;
         try {
@@ -11,5 +11,7 @@ public class Main {
         }
 
         String[] blocks = Coordinateur.split(txt, nbMap);
+
+        System.out.println(CalculMap.countWord(blocks[0]));
     }
 }
