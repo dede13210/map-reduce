@@ -34,7 +34,6 @@ public class Coordinateur {
     public static List<List<Map<String, Integer>>> maps(String[] blocks, int nbReducer) {
         List<List<Map<String, Integer>>> res = new ArrayList<>();
         for (String block : blocks) {
-            System.out.println(CalculMap.countWord(block,nbReducer));
             res.add(CalculMap.countWord(block,nbReducer));
         }
         return res;
