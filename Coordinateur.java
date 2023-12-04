@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,10 +31,11 @@ public class Coordinateur {
         return result;
     }
 
-    public static List<Map<String, Integer>> maps(String[] blocks) {
-        List<Map<String, Integer>> res = new ArrayList<>();
+    public static List<List<Map<String, Integer>>> maps(String[] blocks, int nbReducer) {
+        List<List<Map<String, Integer>>> res = new ArrayList<>();
         for (String block : blocks) {
-            res.add(CalculMap.countWord(block));
+            System.out.println(CalculMap.countWord(block,nbReducer));
+            res.add(CalculMap.countWord(block,nbReducer));
         }
         return res;
     }

@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static int nbMap = 10; //231
+    public static int nbMap = 231; //231
     public static int nbReducer = 10; //231
 
     public static void main(String[] args){
@@ -17,6 +17,10 @@ public class Main {
 
         String[] blocks = Coordinateur.split(txt, nbMap);
 
-        List<Map<String, Integer>> maps = Coordinateur.maps(blocks);
+        List<List<Map<String, Integer>>> maps = Coordinateur.maps(blocks,nbReducer);
+        for(List<Map<String,Integer>> listmap:maps){
+
+        }
+
     }
 }
