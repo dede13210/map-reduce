@@ -1,21 +1,14 @@
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Coordinateur {
-    public static void main(String args[]){
-        try{
-            // Le fichier d'entrée
-            FileInputStream file = new FileInputStream("bible.txt");
-            Scanner scanner = new Scanner(file);
-            System.out.println(scanner.toString());
-
-            scanner.close();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
+    public static String read(String filepath) throws FileNotFoundException {
+        try {
+            return new String(Files.readAllBytes(Paths.get(filepath)));
+        } catch (IOException e) {
+            throw new FileNotFoundException("Le fichier \"" + filepath + "\" n'existe pas");
         }
     }
 }
