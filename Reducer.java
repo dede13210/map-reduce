@@ -1,7 +1,15 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-public class Reducer {
+import java.util.concurrent.Callable;
+
+public class Reducer implements Callable<Map<String,Integer>> {
+    private List<Map<String,Integer>> mapList;
+
+    public Reducer(List<Map<String, Integer>> mapList) {
+        this.mapList = mapList;
+    }
+
     public Map<String,Integer> reduce(List<Map<String,Integer>> mapList){
         //merge map in entry
         HashMap<String, Integer> result = new HashMap<>(mapList.get(0));
@@ -18,4 +26,8 @@ public class Reducer {
 
     }
 
+    @Override
+    public Map<String, Integer> call() throws Exception {
+        return reduce(mapList);
+    }
 }
