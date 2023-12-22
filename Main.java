@@ -7,7 +7,8 @@ public class Main {
         Coordinateur coordinateur = new Coordinateur(10, 10);
         try {
             Map<String, Integer> result = coordinateur.mapReduce("bible.txt");
-            System.out.println("Final result ("+ result.size() +" words) :" + result);
+            int nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
+            System.out.println("Final result ("+ result.size() +" tokens, " + nbWords + " words) : " + result);
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
         }

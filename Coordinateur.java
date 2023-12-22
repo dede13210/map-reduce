@@ -111,7 +111,7 @@ public class Coordinateur {
         for (Map<String, Integer> map : reducedMaps) result.putAll(map);
         return result;
         */
-        return null;
+        return new HashMap<>();
     }
 }
 
