@@ -46,11 +46,8 @@ public class Main {
             reducedMaps.add(reducer.reduce(reducerMaps));
         }
 
-        System.out.println(reducedMaps.size());
-        System.out.println(reducedMaps);
-
         Map<String, Integer> result = new HashMap<>();
         for (Map<String, Integer> map : reducedMaps) result.putAll(map);
-        System.out.println(result);
+        System.out.println("Final result:" + result);
     }
 }

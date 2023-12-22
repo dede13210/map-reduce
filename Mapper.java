@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Mapper {
     public ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
-    public List<Map<String, Integer>> countWord(String texte, int nbrReduce) {
+    public List<Map<String, Integer>> countWord(String texte, int nbReduce) {
         // Utilisation d'une carte (Map) pour stocker les mots et leur nombre d'occurrences
         List<Map<String, Integer>> compteur = new ArrayList<>();
-        for (int i = 0;i<nbrReduce;i++){
+        for (int i = 0;i<nbReduce;i++){
             compteur.add(new HashMap<>());
         }
 
@@ -18,10 +18,10 @@ public class Mapper {
         // Parcourir chaque mot et mettre à jour le compteur
         for (String mot : mots) {
             // Ignorer la casse en convertissant tous les mots en minuscules
-            String motEnMinuscules = mot.replace("[,:;?.]","").toLowerCase();
+            String motEnMinuscules = mot.replaceAll("[,:;?.]","").toLowerCase();
 
             // Mettre à jour le compteur pour le mot actuel
-            int destReducer = this.shuffleStrategy.shuffle(motEnMinuscules, nbrReduce);
+            int destReducer = this.shuffleStrategy.shuffle(motEnMinuscules, nbReduce);
             compteur.get(destReducer).put(motEnMinuscules, compteur.get(destReducer).getOrDefault(motEnMinuscules, 0) + 1);
         }
 
