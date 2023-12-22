@@ -2,9 +2,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-public class Mapper {
-    public ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
+public class Mapper implements Callable<List<Map<String, Integer>>> {
+    private String text;
+    private int nbrReduce;
+    private ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
+    public Mapper(String text, int nbrReduce, ShuffleStrategy shuffleStrategy) {
+        this.text = text;
+        this.nbrReduce = nbrReduce;
+        this.shuffleStrategy = shuffleStrategy;
+    }
+
     public List<Map<String, Integer>> countWord(String texte, int nbReduce) {
         // Utilisation d'une carte (Map) pour stocker les mots et leur nombre d'occurrences
         List<Map<String, Integer>> compteur = new ArrayList<>();
@@ -30,5 +39,10 @@ public class Mapper {
 
     public void setShuffleStrategy(ShuffleStrategy strategy) {
         this.shuffleStrategy = strategy;
+    }
+
+    @Override
+    public List<Map<String, Integer>> call() throws Exception {
+        return countWord(text,nbrReduce);
     }
 }
