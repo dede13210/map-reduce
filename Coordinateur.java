@@ -49,12 +49,12 @@ public class Coordinateur {
     /**
      * Returns the mappers results (list of nbReducer map to send to reducers)
      * @param blocks    the blocks to map (String[])
-     * @param nbReducer the number of reducers to send (int)
      * @return          a list of the list of dictionaries
      */
-    public List<List<Map<String, Integer>>> maps(String[] blocks, int nbReducer) {
+    public List<List<Map<String, Integer>>> maps(String[] blocks) {
         List<List<Map<String, Integer>>> res = new ArrayList<>();
         ExecutorService executor = Executors.newFixedThreadPool(nbMap);
+
         ArrayList<Future<List<Map<String, Integer>>>> listThread = new ArrayList<> ();
         for (String block : blocks) {
             Future<List<Map<String, Integer>>> result = executor.submit(new Mapper(block, nbReducer));
@@ -62,12 +62,9 @@ public class Coordinateur {
         }
 
         try {
-
             for (Future<List<Map<String, Integer>>> resultMapper : listThread){
                 res.add(resultMapper.get());
-
             }
-
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         } finally {
@@ -89,7 +86,7 @@ public class Coordinateur {
         // By Coordinator, depends on number of reducer
         // The coordinator will send each blocks to mappers
         // The mappers will make a list of dictionaries and "send" them to each reducer
-        List<List<Map<String, Integer>>> mapsList = maps(blocks,nbReducer);
+        List<List<Map<String, Integer>>> mapsList = maps(blocks);
         System.out.println(mapsList);
 
 

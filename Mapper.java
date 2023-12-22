@@ -13,15 +13,15 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
         this.nbrReduce = nbrReduce;
     }
 
-    public List<Map<String, Integer>> countWord(String texte, int nbReduce) {
+    public List<Map<String, Integer>> countWord() {
         // Utilisation d'une carte (Map) pour stocker les mots et leur nombre d'occurrences
         List<Map<String, Integer>> compteur = new ArrayList<>();
-        for (int i = 0;i<nbReduce;i++){
+        for (int i = 0;i<nbrReduce;i++){
             compteur.add(new HashMap<>());
         }
 
         // Diviser le texte en mots en utilisant l'espace comme délimiteur
-        String[] mots = texte.split("\\s+");
+        String[] mots = text.split("\\s+");
 
         // Parcourir chaque mot et mettre à jour le compteur
         for (String mot : mots) {
@@ -29,7 +29,7 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
             String motEnMinuscules = mot.replaceAll("[,:;?.]","").toLowerCase();
 
             // Mettre à jour le compteur pour le mot actuel
-            int destReducer = this.shuffleStrategy.shuffle(motEnMinuscules, nbReduce);
+            int destReducer = this.shuffleStrategy.shuffle(motEnMinuscules, nbrReduce);
             compteur.get(destReducer).put(motEnMinuscules, compteur.get(destReducer).getOrDefault(motEnMinuscules, 0) + 1);
         }
 
@@ -42,6 +42,6 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
 
     @Override
     public List<Map<String, Integer>> call() throws Exception {
-        return countWord(text,nbrReduce);
+        return countWord();
     }
 }

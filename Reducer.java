@@ -10,7 +10,7 @@ public class Reducer implements Callable<Map<String,Integer>> {
         this.mapList = mapList;
     }
 
-    public Map<String,Integer> reduce(List<Map<String,Integer>> mapList){
+    public Map<String,Integer> reduce(){
         //merge map in entry
         HashMap<String, Integer> result = new HashMap<>(mapList.get(0));
         for (int i=1;i<mapList.size();i++){
@@ -28,6 +28,6 @@ public class Reducer implements Callable<Map<String,Integer>> {
 
     @Override
     public Map<String, Integer> call() throws Exception {
-        return reduce(mapList);
+        return reduce();
     }
 }
