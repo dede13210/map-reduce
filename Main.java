@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +31,7 @@ public class Main {
 
 
         // Reducing
-        // The reducers will merge the dictionaries they received and send it to
-        List<Reducer> reducers = new ArrayList<>();
+        // The reducers will merge the dictionaries they received and "send" it to client
         List<Map<String, Integer>> reducedMaps = new ArrayList<>();
         for (int i = 0; i < nbReducer; i++) {
             Reducer reducer = new Reducer();
@@ -48,5 +48,9 @@ public class Main {
 
         System.out.println(reducedMaps.size());
         System.out.println(reducedMaps);
+
+        Map<String, Integer> result = new HashMap<>();
+        for (Map<String, Integer> map : reducedMaps) result.putAll(map);
+        System.out.println(result);
     }
 }
