@@ -9,9 +9,9 @@ public class CalculMap {
 
         // Utilisation d'une carte (Map) pour stocker les mots et leur nombre d'occurrences
 
-        List<Map<String, Integer>> compteur = new ArrayList<Map<String,Integer>>();
+        List<Map<String, Integer>> compteur = new ArrayList<>();
         for (int i = 0;i<nbrReduce;i++){
-            compteur.add(new HashMap<String,Integer>());
+            compteur.add(new HashMap<>());
         }
 
         // Diviser le texte en mots en utilisant l'espace comme délimiteur
@@ -23,13 +23,13 @@ public class CalculMap {
             String motEnMinuscules = mot.replace(",","").replace(":","").replace(".","").replace(";","").replace("?","").toLowerCase();
 
             // Mettre à jour le compteur pour le mot actuel
-            compteur.get(shuffling(motEnMinuscules,nbrReduce)).put(motEnMinuscules, compteur.get(shuffling(motEnMinuscules,nbrReduce)).getOrDefault(motEnMinuscules, 0) + 1);
+            compteur.get(shuffle(motEnMinuscules,nbrReduce)).put(motEnMinuscules, compteur.get(shuffle(motEnMinuscules,nbrReduce)).getOrDefault(motEnMinuscules, 0) + 1);
         }
 
         return compteur;
     }
 
-    public static int shuffling(String mot,int nbrReduce){
+    public static int shuffle(String mot, int nbrReduce){
         return mot.length()%nbrReduce;
 
     }
