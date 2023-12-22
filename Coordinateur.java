@@ -3,6 +3,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Coordinateur {
     private int nbMap; //231 for block with equal size
@@ -48,11 +52,26 @@ public class Coordinateur {
      * @param nbReducer the number of reducers to send (int)
      * @return          a list of the list of dictionaries
      */
-    public static List<List<Map<String, Integer>>> maps(String[] blocks, int nbReducer) {
+    public List<List<Map<String, Integer>>> maps(String[] blocks, int nbReducer) {
         List<List<Map<String, Integer>>> res = new ArrayList<>();
+        ExecutorService executor = Executors.newFixedThreadPool(nbMap);
+        ArrayList<Future<List<Map<String, Integer>>>> listThread = new ArrayList<> ();
         for (String block : blocks) {
-            List<Map<String, Integer>> maps = new Mapper().countWord(block, nbReducer);
-            res.add(maps);
+            Future<List<Map<String, Integer>>> result = executor.submit(new Mapper(block, nbReducer));
+            listThread.add(result);
+        }
+
+        try {
+
+            for (Future<List<Map<String, Integer>>> resultMapper : listThread){
+                res.add(resultMapper.get());
+
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executor.shutdown();
         }
         return res;
     }
@@ -70,9 +89,11 @@ public class Coordinateur {
         // By Coordinator, depends on number of reducer
         // The coordinator will send each blocks to mappers
         // The mappers will make a list of dictionaries and "send" them to each reducer
-        List<List<Map<String, Integer>>> mapsList = Coordinateur.maps(blocks,nbReducer);
+        List<List<Map<String, Integer>>> mapsList = maps(blocks,nbReducer);
+        System.out.println(mapsList);
 
 
+        /*
         // Reducing
         // The reducers will merge the dictionaries they received and "send" it to client
         List<Map<String, Integer>> reducedMaps = new ArrayList<>();
@@ -92,6 +113,8 @@ public class Coordinateur {
         Map<String, Integer> result = new HashMap<>();
         for (Map<String, Integer> map : reducedMaps) result.putAll(map);
         return result;
+        */
+        return null;
     }
 }
 

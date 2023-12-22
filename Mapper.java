@@ -8,10 +8,9 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
     private String text;
     private int nbrReduce;
     private ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
-    public Mapper(String text, int nbrReduce, ShuffleStrategy shuffleStrategy) {
+    public Mapper(String text, int nbrReduce) {
         this.text = text;
         this.nbrReduce = nbrReduce;
-        this.shuffleStrategy = shuffleStrategy;
     }
 
     public List<Map<String, Integer>> countWord(String texte, int nbReduce) {
