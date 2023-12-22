@@ -27,8 +27,8 @@ public class Main {
             list1.add(mapList.get(0));
             list2.add(mapList.get(1));
         }
-        System.out.println(Reduce.Reducer(list1));
-        System.out.println(Reduce.Reducer(list2));
+        System.out.println(Reduce.reduce(list1));
+        System.out.println(Reduce.reduce(list2));
 
     }
 }
