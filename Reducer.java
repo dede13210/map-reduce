@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 public class Reducer implements Callable<Map<String,Integer>> {
-    private List<Map<String,Integer>> mapList;
+    private final List<Map<String,Integer>> mapList;
 
     public Reducer(List<Map<String, Integer>> mapList) {
         this.mapList = mapList;
@@ -27,7 +27,7 @@ public class Reducer implements Callable<Map<String,Integer>> {
     }
 
     @Override
-    public Map<String, Integer> call() throws Exception {
+    public Map<String, Integer> call() {
         return reduce();
     }
 }

@@ -26,8 +26,9 @@ public class Coordinateur {
     }
 
     /**
-     * Splits a text into nbBlocks blocks of equivalent size
+     * Splits a text into blocks of equivalent size
      * Only the last block can be smaller than the previous ones
+     * Also replaces single quotes by spaces
      * @param txt       the text to split (String)
      * @param nbBlocks  the number of blocks to split into (int)
      * @return          the array of blocks (String[])
@@ -40,7 +41,7 @@ public class Coordinateur {
         for (int i = 0; i < nbBlocks; i++) {
             int startIdx = i * linesPerBlock;
             int endIdx = (i == nbBlocks - 1) ? lines.length : (i + 1) * linesPerBlock;
-            result[i] = String.join("\n", Arrays.copyOfRange(lines, startIdx, endIdx));
+            result[i] = String.join("\n", Arrays.copyOfRange(lines, startIdx, endIdx)).replace("'", " ");
         }
 
         return result;
@@ -97,21 +98,25 @@ public class Coordinateur {
 
     public Map<String, Integer> mapReduce(String filename) throws FileNotFoundException {
         String txt = Coordinateur.read(filename);
-
+        // TODO : Separate reducing from coordinator
+        // TODO : Fix undeterministic results
         // Splitting
-        // By Client, depends on number of maps (eventually, we could use a block size instead)
-        // Client will "send" each blocks to mappers
+        // Client sends each blocks to mappers (depends on number of maps)
         String[] blocks = Coordinateur.split(txt, nbMap);
 
         // Mapping
-        // By Coordinator, depends on number of reducer
-        // The coordinator will send each blocks to mappers
-        // The mappers will make a list of dictionaries and "send" them to each reducer
+        // The coordinator sends each blocks to mappers (depends on number of reducer)
+        // The mappers make a list of dictionaries and "send" them to each reducer
         List<List<Map<String, Integer>>> mapsList = maps(blocks);
 
         // Reducing
-        // The reducers will merge the dictionaries they received and "send" it to client
+        // The reducers merge the dictionaries they received and "send" it to client
         List<Map<String, Integer>> reducedMaps = reduces(mapsList);
+
+        for (Map<String, Integer> map: reducedMaps) {
+            int nbWords = map.values().stream().mapToInt(Integer::intValue).sum();
+            System.out.println(map.size() +", " + nbWords);
+        }
 
         // Final aggregation
         Map<String, Integer> result = new HashMap<>();

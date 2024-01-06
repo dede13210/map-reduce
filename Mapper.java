@@ -5,20 +5,19 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Mapper implements Callable<List<Map<String, Integer>>> {
-    private String text;
-    private int nbrReduce;
+    private final String text;
+    private final int nbReduce;
     private ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
-    public Mapper(String text, int nbrReduce) {
+    public Mapper(String text, int nbReduce) {
         this.text = text;
-        this.nbrReduce = nbrReduce;
+        this.nbReduce = nbReduce;
     }
 
     public List<Map<String, Integer>> countWord() {
-        // Utilisation d'une carte (Map) pour stocker les mots et leur nombre d'occurrences
-        List<Map<String, Integer>> compteur = new ArrayList<>();
-        for (int i = 0;i<nbrReduce;i++){
-            compteur.add(new HashMap<>());
-        }
+
+        // Création de la liste des map attribuées à chaque reducer
+        List<Map<String, Integer>> reducers = new ArrayList<>();
+        for (int i = 0; i < nbReduce; i++) reducers.add(new HashMap<>());
 
         // Diviser le texte en mots en utilisant l'espace comme délimiteur
         String[] mots = text.split("\\s+");
@@ -28,12 +27,15 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
             // Ignorer la casse en convertissant tous les mots en minuscules
             String motEnMinuscules = mot.replaceAll("[,:;?.]","").toLowerCase();
 
+            // Récupérer l'adresse du reducer destination grâce au mot
+            int destReducerIndex = this.shuffleStrategy.shuffle(motEnMinuscules, nbReduce);
+            Map<String, Integer> destReducer = reducers.get(destReducerIndex);
+
             // Mettre à jour le compteur pour le mot actuel
-            int destReducer = this.shuffleStrategy.shuffle(motEnMinuscules, nbrReduce);
-            compteur.get(destReducer).put(motEnMinuscules, compteur.get(destReducer).getOrDefault(motEnMinuscules, 0) + 1);
+            destReducer.put(motEnMinuscules, destReducer.getOrDefault(motEnMinuscules, 0) + 1);
         }
 
-        return compteur;
+        return reducers;
     }
 
     public void setShuffleStrategy(ShuffleStrategy strategy) {
@@ -41,7 +43,7 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
     }
 
     @Override
-    public List<Map<String, Integer>> call() throws Exception {
+    public List<Map<String, Integer>> call() {
         return countWord();
     }
 }
