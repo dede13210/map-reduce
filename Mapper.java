@@ -7,7 +7,7 @@ import java.util.concurrent.Callable;
 public class Mapper implements Callable<List<Map<String, Integer>>> {
     private String text;
     private final int nbReduce;
-    private ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
+    private ShuffleStrategy shuffleStrategy = new AlphabeticStrategy();
     public Mapper(String text, int nbReduce) {
         this.text = text;
         this.nbReduce = nbReduce;
