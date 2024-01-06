@@ -79,8 +79,12 @@ public class Coordinateur {
         ExecutorService executor = Executors.newFixedThreadPool(nbReducer);
 
         ArrayList<Future<Map<String, Integer>>> threads = new ArrayList<> ();
-        for (List<Map<String, Integer>> maps : mapsList) {
-            Future<Map<String, Integer>> reducerFuture = executor.submit(new Reducer(maps));
+        for (int i = 0;i<nbReducer;i++) {
+            List<Map<String, Integer>> reducemap = new ArrayList<>();
+            for(List<Map<String,Integer>> listmap :mapsList){
+                reducemap.add(listmap.get(i));
+            }
+            Future<Map<String, Integer>> reducerFuture = executor.submit(new Reducer(reducemap));
             threads.add(reducerFuture);
         }
 
@@ -124,7 +128,8 @@ public class Coordinateur {
 
         // Final aggregation
         Map<String, Integer> result = new HashMap<>();
-        for (Map<String, Integer> map : reducedMaps) result.putAll(map);
+        for (Map<String, Integer> map : reducedMaps)
+            result.putAll(map);
         System.out.println(result.values().stream().mapToInt(Integer::intValue).sum());
         return result;
     }
