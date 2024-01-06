@@ -39,7 +39,7 @@ public class Main {
                 // Print result
                 nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
                 // System.out.println("("+nbMap+","+nbReducer+") " + avgDuration + " ms (" + result.size() +" tokens, " + nbWords + " words)");
-                System.out.println(result.get("serviteur") + " serviteurs");
+                //System.out.println(result.get("serviteur") + " serviteurs");
             }
         }
     }

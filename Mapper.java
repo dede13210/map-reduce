@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Mapper implements Callable<List<Map<String, Integer>>> {
-    private final String text;
+    private String text;
     private final int nbReduce;
     private ShuffleStrategy shuffleStrategy = new TourniquetStrategy();
     public Mapper(String text, int nbReduce) {
@@ -20,6 +20,7 @@ public class Mapper implements Callable<List<Map<String, Integer>>> {
         for (int i = 0; i < nbReduce; i++) reducers.add(new HashMap<>());
 
         // Diviser le texte en mots en utilisant l'espace comme délimiteur
+        text = text.replace("'", " ");
         String[] mots = text.split("\\s+");
 
         // Parcourir chaque mot et mettre à jour le compteur
