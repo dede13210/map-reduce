@@ -3,7 +3,9 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        // Print common stats
+        // TODO : bigger dataset
+
+        // Print common stats (nbTokens, nbWords)
         Map<String, Integer> result = new Coordinateur(3, 3).mapReduce("bible.txt");
         int nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
         int nbTokens = result.size();
