@@ -12,6 +12,7 @@ public class Reducer implements Callable<Map<String,Integer>> {
 
     public Map<String,Integer> reduce(){
         //merge map in entry
+        // TODO : Optimize this
         HashMap<String, Integer> result = new HashMap<>(mapList.get(0));
         for (int i=1;i<mapList.size();i++){
             for (String word:mapList.get(i).keySet()){
