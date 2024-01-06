@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
@@ -9,9 +8,10 @@ public class Main {
         int nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
         System.out.println(result.size() +" tokens, " + nbWords + " words");
 
-        int[] nbMapChoices     = {1, 2, 3, 4, 5, 6};
-        int[] nbReducerChoices = {1}; // TODO {1, 2, 3, 4, 5, 6}
+        int[] nbMapChoices     = {1, 2, 3, 4, 5, 6, 7, 8};
+        int[] nbReducerChoices = {1, 2, 3, 4, 5, 6, 7};
         long avgDuration;
+        int perf_iterations = 50;
 
         // Check performances for each combination
         for (int nbMap: nbMapChoices) {
@@ -19,8 +19,8 @@ public class Main {
                 Coordinateur coordinateur = new Coordinateur(nbMap, nbReducer);
 
                 // Check performance (duration) n times
-                long[] durations = new long[1];
-                for (int i = 0; i < 1; i++) {
+                long[] durations = new long[perf_iterations];
+                for (int i = 0; i < perf_iterations; i++) {
                     // Start timer
                     long startTime = System.currentTimeMillis();
                     try {
@@ -38,7 +38,7 @@ public class Main {
 
                 // Print result
                 nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
-                // System.out.println("("+nbMap+","+nbReducer+") " + avgDuration + " ms (" + result.size() +" tokens, " + nbWords + " words)");
+                System.out.println("("+nbMap+","+nbReducer+") " + avgDuration + " ms (" + result.size() +" tokens, " + nbWords + " words)");
                 //System.out.println(result.get("serviteur") + " serviteurs");
             }
         }

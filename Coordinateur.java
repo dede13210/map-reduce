@@ -9,8 +9,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Coordinateur {
-    private int nbMap; //231 for block with equal size
-    private int nbReducer;
+    private final int nbMap;
+    private final int nbReducer;
 
     public Coordinateur(int nbMap, int nbReducer) {
         this.nbMap = nbMap;
@@ -103,7 +103,6 @@ public class Coordinateur {
     public Map<String, Integer> mapReduce(String filename) throws FileNotFoundException {
         String txt = Coordinateur.read(filename);
         // TODO : Separate reducing from coordinator
-        // TODO : Fix undeterministic results (linked to nbMaps) checking final aggregation
 
         // Splitting
         // Client sends each blocks to mappers (depends on number of maps)
@@ -118,19 +117,10 @@ public class Coordinateur {
         // The reducers merge the dictionaries they received and "send" it to client
         List<Map<String, Integer>> reducedMaps = reduces(mapsList);
 
-        int nbWords = 0;
-        int mapLenght = 0;
-        for (Map<String, Integer> map: reducedMaps) {
-            nbWords += map.values().stream().mapToInt(Integer::intValue).sum();
-            mapLenght += map.size();
-        }
-        System.out.println("Map sum : " + nbWords + ", lenght : " + mapLenght);
-
         // Final aggregation
         Map<String, Integer> result = new HashMap<>();
         for (Map<String, Integer> map : reducedMaps)
             result.putAll(map);
-        System.out.println(result.values().stream().mapToInt(Integer::intValue).sum());
         return result;
     }
 }
