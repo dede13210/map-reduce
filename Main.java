@@ -6,7 +6,8 @@ public class Main {
         // Print common stats
         Map<String, Integer> result = new Coordinateur(3, 3).mapReduce("bible.txt");
         int nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
-        System.out.println(result.size() +" tokens, " + nbWords + " words");
+        int nbTokens = result.size();
+        System.out.println(nbTokens +" tokens, " + nbWords + " words");
 
         int[] nbMapChoices     = {1, 2, 3, 4, 5, 6, 7, 8};
         int[] nbReducerChoices = {1, 2, 3, 4, 5, 6, 7};
@@ -37,8 +38,10 @@ public class Main {
                 avgDuration = sum / durations.length;
 
                 // Print result
+                // We also print the total number of words and the number of tokens to check the result veracity
                 nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
-                System.out.println("("+nbMap+","+nbReducer+") " + avgDuration + " ms (" + result.size() +" tokens, " + nbWords + " words)");
+                nbTokens = result.size();
+                System.out.println("("+nbMap+","+nbReducer+") " + avgDuration + " ms (" + nbTokens +" tokens, " + nbWords + " words)");
                 //System.out.println(result.get("serviteur") + " serviteurs");
             }
         }
