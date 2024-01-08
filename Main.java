@@ -15,7 +15,7 @@ public class Main {
         int[] nbReducerChoices = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         long avgDuration;
         int perf_iterations = 100;
-        ShuffleStrategy shuffleStrategy = new AlphabeticStrategy();
+        ShuffleStrategy shuffleStrategy = new RandomStrategy();
 
         // Check performances for each combination
         for (int nbMap: nbMapChoices) {
