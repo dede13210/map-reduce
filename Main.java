@@ -6,20 +6,21 @@ public class Main {
         // TODO : bigger dataset
 
         // Print common stats (nbTokens, nbWords)
-        Map<String, Integer> result = new Coordinateur(3, 3).mapReduce("bible.txt");
+        Map<String, Integer> result = new Coordinateur(3, 3, new AlphabeticStrategy()).mapReduce("bible.txt");
         int nbWords = result.values().stream().mapToInt(Integer::intValue).sum();
         int nbTokens = result.size();
         System.out.println(nbTokens +" tokens, " + nbWords + " words");
 
-        int[] nbMapChoices     = {1, 2, 3, 4, 5, 6, 7, 8};
-        int[] nbReducerChoices = {1, 2, 3, 4, 5, 6, 7};
+        int[] nbMapChoices     = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int[] nbReducerChoices = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         long avgDuration;
-        int perf_iterations = 50;
+        int perf_iterations = 100;
+        ShuffleStrategy shuffleStrategy = new AlphabeticStrategy();
 
         // Check performances for each combination
         for (int nbMap: nbMapChoices) {
             for (int nbReducer: nbReducerChoices) {
-                Coordinateur coordinateur = new Coordinateur(nbMap, nbReducer);
+                Coordinateur coordinateur = new Coordinateur(nbMap, nbReducer, shuffleStrategy);
 
                 // Check performance (duration) n times
                 long[] durations = new long[perf_iterations];

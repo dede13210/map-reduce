@@ -12,9 +12,11 @@ public class Coordinateur {
     private final int nbMap;
     private final int nbReducer;
 
-    public Coordinateur(int nbMap, int nbReducer) {
+    private final ShuffleStrategy shuffleStrategy;
+    public Coordinateur(int nbMap, int nbReducer, ShuffleStrategy strategy) {
         this.nbMap = nbMap;
         this.nbReducer = nbReducer;
+        this.shuffleStrategy = strategy;
     }
 
     public static String read(String filepath) throws FileNotFoundException {
@@ -58,7 +60,7 @@ public class Coordinateur {
 
         ArrayList<Future<List<Map<String, Integer>>>> listThread = new ArrayList<> ();
         for (String block : blocks) {
-            Future<List<Map<String, Integer>>> result = executor.submit(new Mapper(block, nbReducer));
+            Future<List<Map<String, Integer>>> result = executor.submit(new Mapper(block, nbReducer, this.shuffleStrategy));
             listThread.add(result);
         }
 
