@@ -82,11 +82,7 @@ public class Coordinateur {
 
         ArrayList<Future<Map<String, Integer>>> threads = new ArrayList<> ();
         for (int i = 0;i<nbReducer;i++) {
-            List<Map<String, Integer>> reducemap = new ArrayList<>();
-            for(List<Map<String,Integer>> listmap :mapsList){
-                reducemap.add(listmap.get(i));
-            }
-            Future<Map<String, Integer>> reducerFuture = executor.submit(new Reducer(reducemap));
+            Future<Map<String, Integer>> reducerFuture = executor.submit(new Reducer(mapsList,i));
             threads.add(reducerFuture);
         }
 
